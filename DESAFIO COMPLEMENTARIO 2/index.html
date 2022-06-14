@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+</head>
+
+<body>
+    <main>
+        <div class="container-fluid d-flex" id="main-header">
+            <div class="p-5 mb-4 bg-light rounded-3 text-center">
+                <div class="container-fluid py-5 text-center">
+                  <h1 class="display-5 fw-bold">Free Auto Insurance Quote!</h1>
+                  <p class="fs-4">Don't overpay for Auto Insurance. Our simple quote wizard allows you to get the best price in minutes. Find out how much you could save in 2 minutes. </p>
+                  <a class="btn btn-primary btn-lg" href="#quote" role="button">Start now</a>
+                </div>
+              </div>
+        </div>
+
+        <section id="quote">
+            <div class="container">
+                <form action="#" onsubmit="return quoteCar()">
+                    <div class="mb-3">
+                      <label for="emailAddress" class="form-label">Email address</label>
+                      <input type="email" class="form-control" id="emailAddress" aria-describedby="emailHelp" value = "mail@mail.com"required>
+                      <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+                    </div>
+                    <div class="mb-3">
+                        <select class="form-select" aria-label="Select car brand" id="carBrandSelect" onchange="evaluateSelectValue()">
+                            <option disabled selected>Select your car brand</option>
+                          </select>
+                    </div>      
+                    <div class="mb-3" style="display: none;" id="otherBrandDiv">
+                      <label for="otherBrand" class="form-label">Other brand</label>
+                      <input type="text" class="form-control" id="otherBrand" placeholder="Tesla">
+                  </div>
+                    <div class="mb-3">
+                        <label for="carYear" class="form-label">Car year</label>
+                        <input type="number" class="form-control" id="carYear" placeholder="2018" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="personAge" class="form-label">Your Age</label>
+                        <input type="number" class="form-control" id="personAge" placeholder="38" required>
+                    </div>
+
+                    <div class="mb-3 form-check">
+                      <input type="checkbox" class="form-check-input" id="emailCopy" checked>
+                      <label class="form-check-label" for="emailCopy">I want to receive a copy by email</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                  </form>
+                  <br><br>
+            </div>
+        </section>
+
+        <section id="pricing-div" style="display: none;">
+            <div class="container">
+                    <div class="container-fluid">
+                        <div class="p-5 mb-4 bg-light rounded-3 text-center">
+                            <div class="container-fluid py-5 text-center">
+                              <h1 class="display-5 fw-bold">Pricing</h1>
+                              <p class="fs-4">Best prices for your car today. </p>
+                              <a class="btn btn-primary btn-lg" href="index.html" role="button">Start over</a>
+                            </div>
+                          </div>
+                    </div>
+                    <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
+                        <div class="col">
+                          <div class="card mb-4 rounded-3 shadow-sm">
+                            <div class="card-header py-3">
+                              <h4 class="my-0 fw-normal">Liability</h4>
+                            </div>
+                            <div class="card-body">
+                              <h1 class="card-title pricing-card-title">$<span id="liability-price">0</span><small class="text-muted fw-light">/mo</small></h1>
+                              <ul class="list-unstyled mt-3 mb-4">
+                                <li>Liability covered until $1.000.000</li>
+                                <li>1 towing service a month</li>
+                                <li>Email support</li>
+                                <br>
+                              </ul>
+                              <button type="button" class="w-100 btn btn-lg btn-outline-primary">Get started</button>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col">
+                          <div class="card mb-4 rounded-3 shadow-sm">
+                            <div class="card-header py-3">
+                              <h4 class="my-0 fw-normal">Crash Basic</h4>
+                            </div>
+                            <div class="card-body">
+                              <h1 class="card-title pricing-card-title">$<span id="basic-price">15</span><small class="text-muted fw-light">/mo</small></h1>
+                              <ul class="list-unstyled mt-3 mb-4">
+                                <li>Limited repair: $50.000</li>
+                                <li>Regular vendors available</li>
+                                <li>Email support</li>
+                                <li>Liability</li>
+                              </ul>
+                              <button type="button" class="w-100 btn btn-lg btn-primary">Get started</button>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col">
+                          <div class="card mb-4 rounded-3 shadow-sm border-primary">
+                            <div class="card-header py-3 text-white bg-primary border-primary">
+                              <h4 class="my-0 fw-normal">Full Coverage</h4>
+                            </div>
+                            <div class="card-body">
+                              <h1 class="card-title pricing-card-title">$<span id="full-price">29</span><small class="text-muted fw-light">/mo</small></h1>
+                              <ul class="list-unstyled mt-3 mb-4">
+                                <li>Legal advice in case of fatality</li>
+                                <li>No limit repair amount</li>
+                                <li>Pick your preferred vendor</li>
+                                <li>Phone and email support</li>
+                              </ul>
+                              <button type="button" class="w-100 btn btn-lg btn-primary">Contact us</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                </main>
+            </div>
+        </section>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+<script src="js/quote.js"></script>
+</body>
+</html>
