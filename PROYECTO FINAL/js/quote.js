@@ -2,6 +2,9 @@ const currentYear = new Date().getFullYear;
 let carBrands = ['Ford', 'Fiat', 'Renault', 'Chevrolet', 'Peugeot']
 populateCarSelect();
 
+let accessibleMode = false;
+setupAccessibleModeButton();
+
 class QuoteRequest{
     constructor(personAge, carYear, carBrand){
         this.personAge = personAge;
@@ -50,6 +53,7 @@ function quoteCar() {
     quoteAllPlans(request)
 
     changeDisplayByElementId("quote", "none")
+    changeDisplayByElementId("header", "none")
     changeDisplayByElementId("pricing-div", "block")
 
     return false;
@@ -143,4 +147,20 @@ function evaluateSelectValue(){
 function changeDisplayByElementId(elementId, value) {
     let element = document.getElementById(elementId)
     element.style.display = value;
+}
+
+function setupAccessibleModeButton(){
+    let button = document.getElementById("acc-mode");
+    button.onclick = () => accessibleModeAction() ;
+}
+
+function accessibleModeAction(){
+    if (!accessibleMode){
+        accessibleMode = true;
+        document.body.style.fontSize = "1.5em"
+
+    } else {
+        accessibleMode = false;
+        document.body.style.fontSize = "1em"
+    }
 }
