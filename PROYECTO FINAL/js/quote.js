@@ -4,6 +4,8 @@ populateCarSelect();
 
 let accessibleMode = false;
 setupAccessibleModeButton();
+setupStartOverButton()
+setupRecoverButton()
 
 class QuoteRequest{
     constructor(personAge, carYear, carBrand){
@@ -47,7 +49,7 @@ function quoteCar() {
         //exit method
         return false;
     }
-
+    window.localStorage.setItem("quoteRequest", JSON.stringify(request))
     console.log(request.toString())
     
     quoteAllPlans(request)
@@ -154,6 +156,19 @@ function setupAccessibleModeButton(){
     button.onclick = () => accessibleModeAction() ;
 }
 
+function setupStartOverButton(){
+    let button = document.getElementById("start-over");
+    button.onclick = () => startOverAction();
+}
+
+function setupRecoverButton() {
+    let button = document.getElementById("recover-quote");
+    if(window.localStorage.getItem("quoteRequest") == null) {
+        button.style.display = "none"
+    }
+    button.onclick = () => recoverAction();
+}
+
 function accessibleModeAction(){
     if (!accessibleMode){
         accessibleMode = true;
@@ -163,4 +178,17 @@ function accessibleModeAction(){
         accessibleMode = false;
         document.body.style.fontSize = "1em"
     }
+}
+
+function startOverAction() {
+    window.localStorage.removeItem("quoteRequest");
+    window.location.href = "index.html"
+}
+
+function recoverAction() {
+    let recoveredQuoteRequest = window.localStorage.getItem("quoteRequest")
+    quoteAllPlans(JSON.parse(recoveredQuoteRequest))
+    changeDisplayByElementId("quote", "none")
+    changeDisplayByElementId("header", "none")
+    changeDisplayByElementId("pricing-div", "block")
 }
