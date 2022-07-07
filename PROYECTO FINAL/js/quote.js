@@ -16,7 +16,12 @@ class QuoteRequest{
 
     isValidAge() {
         if(this.personAge < 18){
-            alert("You are too young")
+            Swal.fire({
+                title: 'Error!',
+                text: 'You are too young',
+                icon: 'error',
+                confirmButtonText: 'Review age'
+            })
             return false;
         }
         return true;
@@ -24,7 +29,12 @@ class QuoteRequest{
 
     isValidCarYear() {
         if(this.carYear < 1980){
-            alert("You are card is too old")
+            Swal.fire({
+                title: 'Error!',
+                text: 'Your car is too old',
+                icon: 'error',
+                confirmButtonText: 'Review car year'
+            })
             return false;
         }
         return true;
@@ -52,7 +62,7 @@ function quoteCar() {
     window.localStorage.setItem("quoteRequest", JSON.stringify(request))
     console.log(request.toString())
     
-    quoteAllPlans(request)
+    quoteAllPlans(request, 0)
 
     changeDisplayByElementId("quote", "none")
     changeDisplayByElementId("header", "none")
@@ -118,8 +128,11 @@ function showPrice(price, elementId){
     document.getElementById(elementId).textContent = Math.trunc(price);
 }
 
-function quoteAllPlans(quoteRequest){
-    let basePrice = getQuote(quoteRequest.carBrand, quoteRequest.personAge, quoteRequest.carYear);
+function quoteAllPlans(quoteRequest, discount){
+    let basePrice = getQuote(quoteRequest.carBrand, quoteRequest.personAge, quoteRequest.carYear); 
+    if(discount !== 0){
+      basePrice = basePrice * (1 - discount);
+    }
     showPrice(basePrice, "liability-price");
     let crashPrice = basePrice * 1.38;
     showPrice(crashPrice, "basic-price")
@@ -157,7 +170,9 @@ function setupAccessibleModeButton(){
 }
 
 function setupStartOverButton(){
+    window.sessionStorage.setItem('showDiscount', true)
     let button = document.getElementById("start-over");
+    button.onmouseover = () => discountAction()
     button.onclick = () => startOverAction();
 }
 
@@ -166,7 +181,7 @@ function setupRecoverButton() {
     if(window.localStorage.getItem("quoteRequest") == null) {
         button.style.display = "none"
     }
-    button.onclick = () => recoverAction();
+    button.onclick = () => recoverAction(0);
 }
 
 function accessibleModeAction(){
@@ -185,9 +200,28 @@ function startOverAction() {
     window.location.href = "index.html"
 }
 
-function recoverAction() {
+function discountAction(){
+    if("true" == window.sessionStorage.getItem('showDiscount')) {
+        Toastify({
+            text: 'Do not lose this oportunity, buy now with 15% off in all plans. Click to apply discounts',
+            duration: 5000,
+            position: "center",
+            gravity: "top",
+            stopOnFocus: true,
+            close: true,
+            style: {
+                background: "linear-gradient(to right, #00b09b, #96c93d)"
+            },
+            onClick: () => recoverAction(0.15)
+        }
+        ).showToast();
+        window.sessionStorage.setItem('showDiscount', false)
+    }
+}
+
+function recoverAction(discount) {
     let recoveredQuoteRequest = window.localStorage.getItem("quoteRequest")
-    quoteAllPlans(JSON.parse(recoveredQuoteRequest))
+    quoteAllPlans(JSON.parse(recoveredQuoteRequest), discount)
     changeDisplayByElementId("quote", "none")
     changeDisplayByElementId("header", "none")
     changeDisplayByElementId("pricing-div", "block")
