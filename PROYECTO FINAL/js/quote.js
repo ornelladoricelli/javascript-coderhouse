@@ -1,6 +1,7 @@
 const currentYear = new Date().getFullYear;
-let carBrands = ['Ford', 'Fiat', 'Renault', 'Chevrolet', 'Peugeot']
-populateCarSelect();
+const BASE_MODEL_URL = 'https://vpic.nhtsa.dot.gov/api/vehicles/getmodelsformake/%s?format=json';
+let carBrands = ['Ford', 'Fiat', 'Kia', 'Chevrolet', 'Peugeot']
+populateCarBrandSelect();
 
 let accessibleMode = false;
 setupAccessibleModeButton();
@@ -140,7 +141,7 @@ function quoteAllPlans(quoteRequest, discount){
     showPrice(fullPrice, "full-price")
 }
 
-function populateCarSelect(){
+function populateCarBrandSelect(){
     let carBrandSelect = document.getElementById("carBrandSelect");
     for(i = 0; i < carBrands.length; i++){
         let carOption = new Option(carBrands[i], i+1)
@@ -150,12 +151,45 @@ function populateCarSelect(){
     carBrandSelect.options.add(otherOption)
 }
 
-function evaluateSelectValue(){
-    let carBrandSelect = document.getElementById("carBrandSelect");
-    if(carBrandSelect.options[carBrandSelect.selectedIndex].label === 'Other'){
+function populateCarModelSelect(modelList){
+    let carModelSelect = document.getElementById("carModelSelect");
+    console.log(carModelSelect.options)
+
+    clearSelectOptions(carModelSelect.options)
+
+    for(i = 0; i < modelList.length; i++) {
+        let carOption = new Option(modelList[i], i+1)
+        carModelSelect.options.add(carOption)
+    }
+}
+
+function clearSelectOptions(options){
+    while(options.length > 1) {
+        options.remove(1)
+    }
+}
+
+async function evaluateSelectValue(){
+    let carBrand = document.getElementById("carBrandSelect").options[carBrandSelect.selectedIndex].label;
+    if(carBrand === 'Other'){
         changeDisplayByElementId("otherBrandDiv","block")
+        clearSelectOptions(document.getElementById("carModelSelect").options)
+        changeDisplayByElementId("carModelSelect","none") 
     } else {
         changeDisplayByElementId("otherBrandDiv","none")
+        let modelsUrl = BASE_MODEL_URL.replace('%s', carBrand.toLowerCase())
+    const response = await fetch(modelsUrl);
+    if(response.ok){
+        let jsonResponse = await response.json();
+        let modelList = [];
+        let listSize = (jsonResponse.Results.length > 11) ? 11 : jsonResponse.Results.length;
+        for (let i = 0; i < listSize; i++) {
+            let modelObject = jsonResponse.Results[i]
+            modelList.push(modelObject["Model_Name"]);
+        }
+        populateCarModelSelect(modelList)
+        changeDisplayByElementId("carModelSelect","block") 
+    }
     }
 }
 
